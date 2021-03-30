@@ -1,0 +1,12 @@
+note over Browser
+Save
+end note
+note over Browser
+Send note to Server
+end note
+note over Browser
+By use JavaScript fetch note from Server and display to existing notes 
+end note
+
+Browser->Server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+Server->Browser: JSON

@@ -1,0 +1,18 @@
+note over Browser
+Save
+end note
+
+Browser->Server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+Server->Browser: redirect exampleapp//notes
+Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+Server->Browser: HTML-code
+Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+Server->Browser: main.css
+Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+Server->Browser: main.js
+Browser->Server: https://studies.cs.helsinki.fi/exampleapp/data.json
+Server->Browser: data.jso
+
+note over Browser
+event handler renders notes
+end note
