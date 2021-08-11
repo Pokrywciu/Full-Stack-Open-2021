@@ -1,47 +1,53 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import personService from './services/persons'
 
 import Contact from './components/Contact'
 import Contacts from './components/Contacts'
 import ContactForm from './components/ContactForm'
 import Filter from './components/Filter'
+import { throwStatement } from '@babel/types'
 
 const App = () => {
   const [person, setPerson] = useState([])
-  const [ persons, setPersons ] = useState([]) 
   const [ newName, setNewName ] = useState()
   const [ newNumber, setNewNumber]=useState()
   const [filtr, setFiltr]=useState()
 
+
+
   const hook = () =>{
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response=>{
-        console.log('promise fulfilled')
-        setPerson(response.data)
+    personService
+      .getAll()
+      .then(initialPerson=>{
+        setPerson(initialPerson)
       })
   }
   useEffect(hook, [])
-  console.log('render', person.length, 'persons')
+  console.log('render', person.length, 'person')
 
   const addPerson=(event)=>{
     event.preventDefault()
-    const nameObject={
+    const personObject={
       name: newName,
       number: newNumber,
-      id: persons.length+1,
+      id: person.length+1,
     }
-    setPersons(persons.concat(nameObject))
-    setNewName("")
-    setNewNumber("")
+    personService
+      .create(personObject)
+        .then(returnedPerson=>{
+          setNewName('')
+          setPerson(person.concat(returnedPerson))
+          setNewNumber('')
+        })
   }
 
 
-  const nameToShow=(persons.find(name=>name.name===newName))
-  ? (window.alert(`${newName} is already added to your phonebook`),
-   persons)
-  :  persons
+  console.log(newName)
+  const nameToShow=(person.find(check=>check.name===newName))
+  ? (window.alert(`${newName} is already added to your phonebook`))
+  :  person
 
  
 
