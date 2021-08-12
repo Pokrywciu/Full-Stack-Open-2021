@@ -16,6 +16,7 @@ const App = () => {
 
 
 
+
   const hook = () =>{
     console.log('effect')
     personService
@@ -41,13 +42,29 @@ const App = () => {
           setPerson(person.concat(returnedPerson))
           setNewNumber('')
         })
-  }
+
+    const personarray = person.map(e=>e.name)
+    const oldPerson = person.filter(e => e.name === newName)
+    const _id = oldPerson.map(e => e.id)
+    
+    if (personarray.includes(personObject.name)){
+      const result = window.confirm(`${personObject.name} is already added to phonebook, replace the old number with a new one?`)
+      if (result)
+      {personService
+        .update(_id, personObject)
+        .then(returnedPerson=>{
+          setPerson(person.map(person=>person.id===returnedPerson.id ? returnedPerson : person))
+        })}
+    }
 
 
-  console.log(newName)
-  const nameToShow=(person.find(check=>check.name===newName))
-  ? (window.alert(`${newName} is already added to your phonebook`))
-  :  person
+          }
+
+      
+
+
+
+ 
 
  
 
@@ -80,7 +97,7 @@ const App = () => {
           <ContactForm addPerson={addPerson} short={short}/>
       <h2>Numbers</h2>
       <ul>
-          <Contacts contacts={filtr ? filtredPerson :person}/>
+          <Contacts contacts={filtr ? filtredPerson :person} setPerson={setPerson}/>
       </ul>
     </div>
   )
