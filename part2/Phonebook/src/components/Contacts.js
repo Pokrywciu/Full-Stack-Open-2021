@@ -4,7 +4,7 @@ import personService from '../services/persons'
 
 
 
-const Contacts=({contacts, setPerson})=>{
+const Contacts=({contacts, setPerson, setMessage})=>{
 
     
 
@@ -16,6 +16,16 @@ const Contacts=({contacts, setPerson})=>{
         .del(person.id)
           .then(response =>{
             setPerson(contacts.filter(item=>item!==person))
+          })
+          .catch(error=>{
+              setMessage({
+                  text: `${person.name} was already removed`,
+                  type: "error"
+              })
+              setTimeout(()=>{
+                  setMessage(null)
+              }, 3000)
+              setPerson(contacts.filter(item=>item!==person))
           })
       }
     }

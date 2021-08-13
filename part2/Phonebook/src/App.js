@@ -6,13 +6,15 @@ import Contact from './components/Contact'
 import Contacts from './components/Contacts'
 import ContactForm from './components/ContactForm'
 import Filter from './components/Filter'
-import { throwStatement } from '@babel/types'
+import Notification from './components/Notification'
 
 const App = () => {
   const [person, setPerson] = useState([])
   const [ newName, setNewName ] = useState()
   const [ newNumber, setNewNumber]=useState()
   const [filtr, setFiltr]=useState()
+  const [message, setMessage]=useState(null)
+  const [errorMessage, setErrorMessage]=useState(null)
 
 
 
@@ -38,8 +40,15 @@ const App = () => {
     personService
       .create(personObject)
         .then(returnedPerson=>{
-          setNewName('')
+          setMessage({
+            text: `Added ${newName}`,
+            type: "success"
+          })
+          setTimeout(()=>{
+            setMessage(null)
+          },3000)
           setPerson(person.concat(returnedPerson))
+          setNewName('')
           setNewNumber('')
         })
 
@@ -54,19 +63,16 @@ const App = () => {
         .update(_id, personObject)
         .then(returnedPerson=>{
           setPerson(person.map(person=>person.id===returnedPerson.id ? returnedPerson : person))
+          setMessage(`The number is changed`)
+          setTimeout(()=>{
+            setMessage(null)
+          },3000)
         })}
     }
 
 
           }
 
-      
-
-
-
- 
-
- 
 
   const handleNameChange=(event)=>{
     setNewName(event.target.value)
@@ -91,13 +97,14 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={message}/>
       <h2>Search:</h2>
         <Filter filtr={filtr} short={short}/>
       <h2>Add New:</h2>
           <ContactForm addPerson={addPerson} short={short}/>
       <h2>Numbers</h2>
       <ul>
-          <Contacts contacts={filtr ? filtredPerson :person} setPerson={setPerson}/>
+          <Contacts contacts={filtr ? filtredPerson :person} setPerson={setPerson} setMessage={setMessage}/>
       </ul>
     </div>
   )
