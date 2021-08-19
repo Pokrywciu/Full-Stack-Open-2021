@@ -1,10 +1,12 @@
-const { request, response } = require('express')
+
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
+const cors = require('cors')
 
 app.use(express.json())
-
+app.use(cors())
+app.use(express.static('build'))
 
 morgan.token('post', (request) => {
   if (request.method === 'POST')
@@ -71,7 +73,6 @@ app.delete('/api/persons/:id', (request, response)=>{
 app.post('/api/persons', (request, response)=>{
     const number_of_id = 10000
     const generateID = Math.floor(Math.random()*number_of_id)
-    console.log(generateID)
     const body = request.body
 
     if(!body.name){
@@ -106,7 +107,7 @@ const unknownEndpoint = (request, response) => {
 
 app.use(unknownEndpoint)
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
