@@ -99,14 +99,10 @@ app.post('/api/persons', (request, response)=>{
         id: generateID,
     })
 
-    /*if(persons.find(n=>n.name===person.name)){
-      return response.status(400).json({
-        error: 'Name must be unique'
-      })
+    if(Person.findById){
+      return response.status(200)
     }
-    else
-      {persons = persons.concat(person)
-      response.json(person)} */
+
     person.save().then(savedPerson=>{
       response.json(savedPerson)
     })
