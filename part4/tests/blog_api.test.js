@@ -46,6 +46,23 @@ describe('when the blog is posted', () => {
     }, 100000)
   })
 
+describe('deletion of blog', () => {
+  test('blog is deleted', async () =>{
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+    console.log(blogToDelete._id)
+
+      await api 
+        .delete(`/api/blogs/${blogToDelete._id}`)
+        .expect(204)
+
+    const blogAtEnd = await helper.blogsInDb()
+    expect(blogAtEnd).toHaveLength(helper.initialBlogs.length-1)
+  },100000)
+})
+
+
+
 afterAll(() => {
   mongoose.connection.close()
 })

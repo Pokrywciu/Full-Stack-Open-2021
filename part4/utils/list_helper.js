@@ -21,6 +21,7 @@ const favoriteBlog = (blogs) => {
 
 const initialBlogs = [
   {
+    id: 2,
     title: 'React patterns',
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
@@ -33,6 +34,7 @@ const initialBlogs = [
     likes: 5,
   }
 ]
+
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
   return blogs.map(blog => blog.toJSON())
