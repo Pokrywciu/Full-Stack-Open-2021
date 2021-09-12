@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
 const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/Blog')
+const User = require('../models/User')
 const helper = require('../utils/list_helper')
 const api = supertest(app)
 
@@ -59,6 +61,18 @@ describe('deletion of blog', () => {
     const blogAtEnd = await helper.blogsInDb()
     expect(blogAtEnd).toHaveLength(helper.initialBlogs.length-1)
   },100000)
+})
+
+
+describe('when there is initially one user in db', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', passwordHash })
+
+    await user.save()
+  })
 })
 
 
