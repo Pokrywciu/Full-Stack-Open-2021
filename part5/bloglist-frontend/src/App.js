@@ -36,19 +36,19 @@ const App = () => {
 
     blogService
       .create(blogObject)
-        .then(returnedBlog =>{
-          setMessage({
-            text: `Added ${returnedBlog.title}`,
-            type: "success"
-          })
-          setTimeout(()=>{
-            setMessage(null)
-          },3000)
-          setBlogs(blogs.concat(returnedBlog))
+      .then(returnedBlog => {
+        setMessage({
+          text: `Added ${returnedBlog.title}`,
+          type: 'success'
         })
+        setTimeout(() => {
+          setMessage(null)
+        },3000)
+        setBlogs(blogs.concat(returnedBlog))
+      })
   }
 
-  const handleLogout = async (event) =>{
+  const handleLogout = async () => {
     window.localStorage.removeItem('loggedBlogAppUser')
     setUser(null)
   }
@@ -60,7 +60,8 @@ const App = () => {
       <div>
         <h2>log in to application</h2>
         username
-          <input
+        <input
+          id="username"
           type="text"
           value={username}
           name="Username"
@@ -69,22 +70,23 @@ const App = () => {
       </div>
       <div>
         password
-          <input
+        <input
+          id="password"
           type="password"
           value={password}
           name="Password"
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type="submit">login</button>
-    </form>      
+      <button id="login" type="submit">login</button>
+    </form>
   )
 
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -107,7 +109,7 @@ const App = () => {
         <button onClick={handleLogout}>logout</button>
       </p>
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-      <BlogForm createBlog={addBlog}/>
+        <BlogForm createBlog={addBlog}/>
       </Togglable>
       <h2>blogs</h2>
       <Notification message={message}/>
